@@ -2,9 +2,9 @@
 // @name         Wayfarer Extended Stats
 // @version      0.1.0
 // @description  Add extended Wayfarer Profile stats
-// @namespace    https://gitlab.com/zAlfonsoML/wayfarer/
-// @downloadURL  https://gitlab.com/zAlfonsoML/wayfarer/raw/master/wayfarer-translate.user.js
-// @homepageURL  https://gitlab.com/zAlfonsoML/wayfarer/
+// @namespace    https://github.com/tehstone/wayfarer-extended-stats
+// @downloadURL  https://github.com/tehstone/wayfarer-extended-stats/raw/main/wayfarer-es.user.js
+// @homepageURL  https://github.com/tehstone/wayfarer-extended-stats
 // @match        https://wayfarer.nianticlabs.com/*
 // ==/UserScript==
 
