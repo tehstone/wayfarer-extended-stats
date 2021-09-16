@@ -1,0 +1,1 @@
+# wayfarer-extended-stats
