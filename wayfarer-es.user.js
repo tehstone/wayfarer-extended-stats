@@ -64,7 +64,7 @@ function init() {
 	}
 
 	function addSettings() {
-		const ref = document.querySelector('wf-logo');
+		const ref = document.querySelector('app-rating-bar');
 
 		if (!ref) {
 			if (tryNumber === 0) {
@@ -98,37 +98,97 @@ function init() {
 	    select.id = 'wayfarercccounttype';
 	    select.classList.add('wayfarercc_select');
 
-	    let input = document.createElement('input');
-	    input.setAttribute("type", "number");
-	    input.setAttribute("size", '2');
-	    //input.size = 3;
+	    const selectLabel = document.createElement("label");
+        selectLabel.innerText = "Agreement Count Type:";
+        selectLabel.setAttribute("for", "wayfarercccounttype");
+        selectLabel.classList.add('wayfareres_settings_label');
+
+	    let badgeCountInput = document.createElement('input');
+	    badgeCountInput.setAttribute("type", "number");
+	    badgeCountInput.setAttribute("size", '2');
 	    const userId = getUserId();
 	    let badgeCount = localStorage["wfcc_badge_count_" + userId];
 	    if (badgeCount === undefined || badgeCount === null || badgeCount === "" || badgeCount === "false"){
 		    badgeCount = 0;
 		}
-		input.value = badgeCount;
-		input.addEventListener('change', function () {
+		badgeCountInput.value = badgeCount;
+		badgeCountInput.addEventListener('change', function () {
 	        const userId = getUserId();
 	        badgeCount = this.value;
 	    	localStorage["wfcc_badge_count_" + userId] = badgeCount;
 	    	updateAgreementDisplay();
 	    });
-	    input.classList.add('wayfarercc_input');
+		badgeCountInput.id - "wayfarerccbadgecount";
+	    badgeCountInput.classList.add('wayfarercc_input');
 
+	    const badgeCountLabel = document.createElement("label");
+        badgeCountLabel.innerText = "Badge Agreement Count:";
+        badgeCountLabel.setAttribute("for", "wayfarerccbadgecount");
+        badgeCountLabel.classList.add('wayfareres_settings_label');
+
+        let bonusUpgradeInput = document.createElement('input');
+	    bonusUpgradeInput.setAttribute("type", "number");
+	    bonusUpgradeInput.setAttribute("size", '2');
+	    let bonusUpgrade = localStorage["wfcc_bonus_upgrade_" + userId];
+	    if (bonusUpgrade === undefined || bonusUpgrade === null || bonusUpgrade === "" || bonusUpgrade === "false"){
+		    bonusUpgrade = 0;
+		}
+		bonusUpgradeInput.value = bonusUpgrade;
+		bonusUpgradeInput.addEventListener('change', function () {
+	        const userId = getUserId();
+	        bonusUpgrade = this.value;
+	    	localStorage["wfcc_bonus_upgrade_" + userId] = bonusUpgrade;
+	    	updateAgreementDisplay();
+	    });
+		bonusUpgradeInput.id - "wayfarerccbonusupgrade";
+	    bonusUpgradeInput.classList.add('wayfarercc_input');
+
+	    const bonusUpgradeLabel = document.createElement("label");
+        bonusUpgradeLabel.innerText = "Bonus Upgrades Earned:";
+        bonusUpgradeLabel.setAttribute("for", "wayfarerccbonusupgrade");
+        bonusUpgradeLabel.classList.add('wayfareres_settings_label');
+
+	    div.appendChild(selectLabel);
 	    div.appendChild(select);
 	    div.appendChild(document.createElement('br'))
-	    div.appendChild(input);
-	    const container = ref.parentNode.parentNode;
-    	container.appendChild(div);
+	    div.appendChild(badgeCountLabel);
+	    div.appendChild(badgeCountInput);
+	    div.appendChild(document.createElement('br'))
+	    div.appendChild(bonusUpgradeLabel);
+	    div.appendChild(bonusUpgradeInput);
     	div.classList.add('wayfarerrh__visible');
+
+    	const settingsContainer = document.createElement('div');
+        settingsContainer.setAttribute('class', 'wrap-collabsible')
+        settingsContainer.id = "nomStats";
+
+        const collapsibleInput = document.createElement("input");
+        collapsibleInput.id = "collapsed-settings";
+        collapsibleInput.setAttribute("class", "toggle");
+        collapsibleInput.type = "checkbox";
+
+        const collapsibleLabel = document.createElement("label");
+        collapsibleLabel.setAttribute("class", "lbl-toggle");
+        collapsibleLabel.innerText = "Settings";
+        collapsibleLabel.setAttribute("for", "collapsed-settings");
+
+        const collapsibleContent = document.createElement("div");
+        collapsibleContent.setAttribute("class", "collapsible-content");
+
+        collapsibleContent.appendChild(div);
+        settingsContainer.appendChild(collapsibleInput);
+        settingsContainer.appendChild(collapsibleLabel);
+        settingsContainer.appendChild(collapsibleContent);
+
+        const container = ref.parentNode.parentNode;
+    	container.appendChild(settingsContainer);
 	}
 
 	function updateAgreementDisplay() {
 		let countDiv = document.getElementById("totalcountnumber");
 		if (countDiv !== null) {
-			const {finished, total, progress} = stats;
-			const newCount = getTotalAgreementCount(total, progress);
+			const {finished, total, available, progress} = stats;
+			const newCount = getTotalAgreementCount(total, available, progress);
 			const percent = ((newCount / finished)*100).toFixed(1);
     		countDiv.innerHTML = newCount + " (" + percent + "%)";
 		}
@@ -201,7 +261,9 @@ function init() {
 			}
 			return badgeCount;
 		} else {
-			return (total + available) * 100 + progress;
+			const userId = getUserId();
+        	const bonusUpgrade = parseInt(localStorage["wfcc_bonus_upgrade_" + userId]);
+			return (total + available - bonusUpgrade) * 100 + progress;
 		}
 	}
 
@@ -289,14 +351,23 @@ function init() {
 		    .wayfarercc_select {
 		    	margin:  2px 12px;
 		    	padding: 2px 12px;
-		    	background-color: #e5e5e5;
+		    	background-color: #FFFFFF;
+		    	color: black;
 		    }
 
 		    .wayfarercc_input {
 		    	margin:  2px 12px;
 		    	padding: 2px 12px;
 		    	width: 90px;
-		    	background-color: #e5e5e5;
+		    	background-color: #FFFFFF;
+		    	color: black;
+		    }
+
+		    .wayfareres_settings_label {
+		    	margin:  2px 12px;
+		    	padding: 2px 12px;
+		    	color: black;
+		    	font-size: 16px;
 		    }
 
 		      .wayfarercc_parent {
@@ -336,6 +407,98 @@ function init() {
 		      .wayfarercc__hiddendl {
 		        display: none;
 		      }
+
+			.wrap-collabsible {
+				margin-bottom: 1.2rem;
+			}
+
+			#collapsible,
+			#collapsed-stats {
+				display: none;
+			}
+
+			.lbl-toggle {
+				display: block;
+				font-weight: bold;
+				font-family: monospace;
+				font-size: 1.2rem;
+				text-transform: uppercase;
+				text-align: center;
+				padding: 1rem;
+				color: white;
+				background: #DF471C;
+				cursor: pointer;
+				border-radius: 7px;
+				transition: all 0.25s ease-out;
+				width: 50%;
+				margin: auto;
+			}
+
+			.lbl-toggle:hover {
+				color: lightgrey;
+			}
+
+			.lbl-toggle::before {
+				content: ' ';
+				display: inline-block;
+				border-top: 5px solid transparent;
+				border-bottom: 5px solid transparent;
+				border-left: 5px solid currentColor;
+				vertical-align: middle;
+				margin-right: .7rem;
+				transform: translateY(-2px);
+				transition: transform .2s ease-out;
+			}
+
+			.toggle {
+				display:none;
+			}
+
+			.toggle:checked+.lbl-toggle::before {
+				transform: rotate(90deg) translateX(-3px);
+			}
+
+			.collapsible-content {
+				max-height: 0px;
+				overflow: hidden;
+				transition: max-height .25s ease-in-out;
+				font-size: 16px;
+				background-color: #e5e5e5;
+				border: 1px;
+				border-radius: 3px;
+				border-style: double;
+				border-color: #ff4713;
+				margin: auto;
+				width: 50%;
+			}
+
+			.toggle:checked+.lbl-toggle+.collapsible-content {
+				max-height: 9999999pt;
+			}
+
+			.toggle:checked+.lbl-toggle {
+				border-bottom-right-radius: 0;
+				border-bottom-left-radius: 0;
+			}
+
+			.collapsible-content .content-inner {
+				border-bottom: 1px solid rgba(0, 0, 0, 1);
+				border-left: 1px solid rgba(0, 0, 0, 1);
+				border-right: 1px solid rgba(0, 0, 0, 1);
+				border-bottom-left-radius: 7px;
+				border-bottom-right-radius: 7px;
+				padding: .5rem 1rem;
+			}
+
+			.content-inner td:last-child {
+				text-align: right;
+			}
+
+			th,
+			td {
+				border: white solid 1pt;
+				padding: 1pt 5pt;
+			}
 			`;
 		const style = document.createElement('style');
 		style.type = 'text/css';
