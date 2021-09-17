@@ -1,6 +1,6 @@
 // ==UserScript==
 // @name         Wayfarer Extended Stats
-// @version      0.2.0
+// @version      0.3.0
 // @description  Add extended Wayfarer Profile stats
 // @namespace    https://github.com/tehstone/wayfarer-extended-stats
 // @downloadURL  https://github.com/tehstone/wayfarer-extended-stats/raw/main/wayfarer-es.user.js
@@ -168,12 +168,12 @@ function init() {
         collapsibleInput.type = "checkbox";
 
         const collapsibleLabel = document.createElement("label");
-        collapsibleLabel.setAttribute("class", "lbl-toggle");
+        collapsibleLabel.setAttribute("class", "lbl-toggle-es");
         collapsibleLabel.innerText = "Settings";
         collapsibleLabel.setAttribute("for", "collapsed-settings");
 
         const collapsibleContent = document.createElement("div");
-        collapsibleContent.setAttribute("class", "collapsible-content");
+        collapsibleContent.setAttribute("class", "collapsible-content-es");
 
         collapsibleContent.appendChild(div);
         settingsContainer.appendChild(collapsibleInput);
@@ -291,7 +291,7 @@ function init() {
 	  let other = 0;
 	  let total_agreements = 0;
 	  const base_agreements = accepted + rejected + duplicated;
-	  
+
 	  let count_type = localStorage['wfcc_count_type_dropdown'];
 	  if (count_type === "badgestat") {
 	  	count_type = "facts";
@@ -420,7 +420,7 @@ function init() {
 				display: none;
 			}
 
-			.lbl-toggle {
+			.lbl-toggle-es {
 				display: block;
 				font-weight: bold;
 				font-family: monospace;
@@ -437,11 +437,11 @@ function init() {
 				margin: auto;
 			}
 
-			.lbl-toggle:hover {
+			.lbl-toggle-es:hover {
 				color: lightgrey;
 			}
 
-			.lbl-toggle::before {
+			.lbl-toggle-es::before {
 				content: ' ';
 				display: inline-block;
 				border-top: 5px solid transparent;
@@ -457,11 +457,11 @@ function init() {
 				display:none;
 			}
 
-			.toggle:checked+.lbl-toggle::before {
+			.toggle:checked+.lbl-toggle-es::before {
 				transform: rotate(90deg) translateX(-3px);
 			}
 
-			.collapsible-content {
+			.collapsible-content-es {
 				max-height: 0px;
 				overflow: hidden;
 				transition: max-height .25s ease-in-out;
@@ -475,16 +475,16 @@ function init() {
 				width: 50%;
 			}
 
-			.toggle:checked+.lbl-toggle+.collapsible-content {
+			.toggle:checked+.lbl-toggle-es+.collapsible-content-es {
 				max-height: 9999999pt;
 			}
 
-			.toggle:checked+.lbl-toggle {
+			.toggle:checked+.lbl-toggle-es {
 				border-bottom-right-radius: 0;
 				border-bottom-left-radius: 0;
 			}
 
-			.collapsible-content .content-inner {
+			.collapsible-content-es .content-inner {
 				border-bottom: 1px solid rgba(0, 0, 0, 1);
 				border-left: 1px solid rgba(0, 0, 0, 1);
 				border-right: 1px solid rgba(0, 0, 0, 1);
