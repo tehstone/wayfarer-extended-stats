@@ -77,6 +77,11 @@ function init() {
 			return;
 		}
 
+		const testelem = document.getElementById("wayfarercccounttype");
+	    if (testelem !== null) {
+	      return;
+	    }
+
 		const div = document.createElement('div');
 		let select = document.createElement('select');
 	    select.title = "Select count type";
@@ -90,6 +95,7 @@ function init() {
 	      localStorage['wfcc_count_type_dropdown'] = selection;
 	      updateAgreementDisplay();
 	    });
+	    select.id = 'wayfarercccounttype';
 	    select.classList.add('wayfarercc_select');
 
 	    let input = document.createElement('input');
@@ -172,7 +178,7 @@ function init() {
     		let totalcount = document.createElement('div');
     		totalcount.id = "totalcountnumber"
     		const {accepted, rejected, duplicated, finished, available, progress, total} = stats;
-    		allAgreements = getTotalAgreementCount(total, progress);
+    		allAgreements = getTotalAgreementCount(total, available, progress);
     		const percent = ((allAgreements / finished)*100).toFixed(1);
     		totalcount.innerHTML = allAgreements + " (" + percent + "%)";
     		totalcount.classList.add("wayfarercc_count");
@@ -185,7 +191,7 @@ function init() {
     	}
 	}
 
-	function getTotalAgreementCount(total, progress) {
+	function getTotalAgreementCount(total, available, progress) {
 		const countType = localStorage['wfcc_count_type_dropdown'];
 		if (countType === "badgestat") {
 			const userId = getUserId();
@@ -195,7 +201,7 @@ function init() {
 			}
 			return badgeCount;
 		} else {
-			return total * 100 + progress;
+			return (total + available) * 100 + progress;
 		}
 	}
 
